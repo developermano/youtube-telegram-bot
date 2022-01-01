@@ -4,12 +4,11 @@ from telegram.ext import Updater, CommandHandler, CallbackContext
 
 
 def start(update: Update, context: CallbackContext) -> None:
-    """Send a message when the command /start is issued."""
-    update.message.reply_text('Hi! .welcome to @Eritybot . run /channel command to upload all videos .')
+    update.message.reply_text('Hi! .welcome to @Eritybot . run /channel command to upload all videos to this chat.')
   
 
 def channel(update: Update, context: CallbackContext) -> None:
-    update.message.reply_text('ss')
+    update.message.reply_text(context.args[0])
 
 def main() -> None:
     """Run the bot."""
@@ -21,7 +20,7 @@ def main() -> None:
     # Get the dispatcher to register handlers
     dispatcher = updater.dispatcher
     dispatcher.add_handler(CommandHandler("start", start))
-    dispatcher.add_handler(CommandHandler("channel", channel))
+    dispatcher.add_handler(CommandHandler("channel", channel,pass_args=True))
 
     updater.start_polling()
     updater.idle()

@@ -72,6 +72,14 @@ passport = ["cryptography (!=3.4,!=3.4.1,!=3.4.2,!=3.4.3)"]
 socks = ["pysocks"]
 
 [[package]]
+name = "pytube"
+version = "11.0.2"
+description = "Python 3 library for downloading YouTube Videos."
+category = "main"
+optional = false
+python-versions = ">=3.6"
+
+[[package]]
 name = "pytz"
 version = "2021.3"
 description = "World timezone definitions, modern and historical"
@@ -135,7 +143,7 @@ test = ["pytest-mock (>=3.3)", "pytest (>=4.3)"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.8"
-content-hash = "54d8d652e491cfec07474e9352711b5db68a8c835b073b0f060fface143b0f17"
+content-hash = "818150dd8ac8d4419813619001bd8201e206fc05c9e5062619bf2ef118eb3b7f"
 
 [metadata.files]
 apscheduler = [
@@ -171,6 +179,10 @@ certifi = [
 python-telegram-bot = [
     {file = "python-telegram-bot-13.9.tar.gz", hash = "sha256:512d7a84f4bf4e59b7acaf87a38e29c60f65a2717ebf6455b4d66fd058326b1b"},
     {file = "python_telegram_bot-13.9-py3-none-any.whl", hash = "sha256:a0018979585054f9c8da70198701053705ff1cd2839cc74b2da5371e3ada9ada"},
+]
+pytube = [
+    {file = "pytube-11.0.2-py3-none-any.whl", hash = "sha256:bf2b350e8e991f82b874928f5f1ba1a733a9848d650b01b08fabdf85eea15356"},
+    {file = "pytube-11.0.2.tar.gz", hash = "sha256:21d2d151e6525f9f79401ae7a74a7de1e2bb1c00ede5d77c89e22d496389c5f1"},
 ]
 pytz = [
     {file = "pytz-2021.3-py2.py3-none-any.whl", hash = "sha256:3672058bc3453457b622aab7a1c3bfd5ab0bdae451512f6cf25f64ed37f5b87c"},
