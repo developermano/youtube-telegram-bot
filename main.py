@@ -7,6 +7,8 @@ import sched, time
 from replit import db
 import string
 import random
+from pytube import YouTube
+
 
 
 bot=Bot(os.environ['token'])
@@ -15,6 +17,31 @@ def alarm(context: CallbackContext) -> None:
     """Send the alarm message."""
     job = context.job
     #context.bot.send_message(job.context, text='Beep!')
+    for i in db.keys():
+      print(i)
+      try:
+        c=Channel(db[i]['url'])
+        print(db[i]['totalvideos'])
+        print(len(c.video_urls))
+        print(c.video_urls)
+        if db[i]['totalvideos'] < len(c.video_urls):
+          video=c.video_urls[0]
+          try:
+            yt = YouTube(video)
+            fi=yt.streams.filter(progressive=True, file_extension='mp4').order_by('resolution').desc().first().download("out/")
+          except:
+            bot.send_message(db[i]['chatid'],"something goes wrong")
+            shutil.rmtree('out')
+          bot.send_video(db[i]['chatid'],open(fi, 'rb'))
+          shutil.rmtree('out')
+          chatid=db[i]['chatid']
+          channelurl=db[i]['url']
+          totalvideos=db[i]['totalvideos']+1
+          
+          del db[i]
+          db[i] = {"chatid":chatid,"url":channelurl,"totalvideos":totalvideos}
+      except:
+        pass
 
 def remove_job_if_exists(name: str, context: CallbackContext) -> bool:
     """Remove job with given name. Returns whether job was removed."""
@@ -58,12 +85,12 @@ def unset(update: Update, context: CallbackContext) -> None:
 
 
 
-def rejesterping(channelurl):
+def rejesterping(channelurl,chat_id,total_videos):
   N = 7
   res = ''.join(random.choices(string.ascii_uppercase +
                              string.digits, k = N))
   
-  db[str(res)] = str(channelurl)
+  db[str(res)] = {"chatid":chat_id,"url":channelurl,"totalvideos":total_videos}
 
 
 def start(update: Update, context: CallbackContext) -> None:
@@ -71,18 +98,33 @@ def start(update: Update, context: CallbackContext) -> None:
   
 
 def channel(update: Update, context: CallbackContext) -> None:
+  if not str(context.args[0]).startswith("https://www.youtube.com"):
+     update.message.reply_text('the youtube url must start with https://www.youtube.com')
+     return 
   try:
+    
     c = Channel(context.args[0])
     #for url in c.video_urls:
     #  print(url)
+    avi=True
+    for i in db.keys():
+      if db[i]['url']==context.args[0] and db[i]['chatid']==str(update.effective_message.chat_id):
+        avi=False
+    if avi==True:
+      rejesterping(context.args[0],update.effective_message.chat_id,len(c.video_urls))
+    else:
+      update.message.reply_text('the channel is added already')
+      return 
     for video in c.videos:
       try:
         fi=video.streams.filter(progressive=True, file_extension='mp4').order_by('resolution').desc().first().download("out/")
       except:
         update.message.reply_text('the bot does not have enough space to download the video')
+        shutil.rmtree('out')
       bot.send_video(update.effective_message.chat_id,open(fi, 'rb'))
       shutil.rmtree('out')
-    rejesterping(context.args[0])
+    
+
   except:
     update.message.reply_text('your video downloading may go wrong')
 
