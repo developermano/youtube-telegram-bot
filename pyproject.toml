@@ -8,6 +8,7 @@ authors = ["manodeveloper <<>>"]
 python = "^3.8"
 python-telegram-bot = "^13.9"
 pytube = "^11.0.2"
+replit = "^3.2.4"
 
 [tool.poetry.dev-dependencies]
 
