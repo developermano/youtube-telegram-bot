@@ -10,7 +10,6 @@ import random
 from pytube import YouTube
 
 
-
 bot=Bot(os.environ['token'])
 
 def alarm(context: CallbackContext) -> None:
@@ -108,8 +107,10 @@ def channel(update: Update, context: CallbackContext) -> None:
     #  print(url)
     avi=True
     for i in db.keys():
-      if db[i]['url']==context.args[0] and db[i]['chatid']==str(update.effective_message.chat_id):
-        avi=False
+      print(i)
+      if db[i]['url']==context.args[0]:
+        if db[i]['chatid']==update.effective_message.chat_id:
+          avi=False
     if avi==True:
       rejesterping(context.args[0],update.effective_message.chat_id,len(c.video_urls))
     else:
